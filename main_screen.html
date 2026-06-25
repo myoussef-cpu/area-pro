@@ -1,0 +1,894 @@
+<title>الرئيسية - المهندس</title>
+<div class="main-dashboard stagger" id="mainDashboard">
+  <!-- Welcome Header -->
+  <div class="welcome-card" id="welcomeCard">
+    <div class="welcome-avatar">
+      <i class="fas fa-user-graduate"></i>
+    </div>
+    <div class="welcome-text">
+      <h1 id="greetingText">مرحباً</h1>
+      <p>أهلاً بك في المهندس - حاسبة الهندسة الشاملة</p>
+    </div>
+  </div>
+
+  <!-- Search Bar -->
+  <div class="search-wrapper" id="searchWrapper">
+    <div class="search-bar">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" id="searchInput" placeholder="ابحث عن أداة..." autocomplete="off" aria-label="ابحث عن أداة">
+      <button class="search-clear" id="searchClear" aria-label="مسح"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+
+  <!-- Featured Tools -->
+  <section class="dash-section">
+    <h2 class="section-title">أدوات سريعة</h2>
+    <div class="featured-scroll" id="featuredScroll">
+      <button class="featured-item" data-cat="geometry">
+        <span class="fi-icon" style="background:linear-gradient(135deg,#1a73e8,#0d47a1)"><i class="fas fa-draw-polygon"></i></span>
+        <span class="fi-label">المساحات</span>
+      </button>
+      <button class="featured-item" data-cat="volumes">
+        <span class="fi-icon" style="background:linear-gradient(135deg,#0acf83,#059669)"><i class="fas fa-cube"></i></span>
+        <span class="fi-label">الأحجام</span>
+      </button>
+      <button class="featured-item" data-cat="construction">
+        <span class="fi-icon" style="background:linear-gradient(135deg,#ff6b35,#dc2626)"><i class="fas fa-hard-hat"></i></span>
+        <span class="fi-label">الخرسانة</span>
+      </button>
+      <button class="featured-item" data-cat="electrical">
+        <span class="fi-icon" style="background:linear-gradient(135deg,#ffc043,#d97706)"><i class="fas fa-bolt"></i></span>
+        <span class="fi-label">الكهرباء</span>
+      </button>
+      <button class="featured-item" data-cat="conversion">
+        <span class="fi-icon" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)"><i class="fas fa-exchange-alt"></i></span>
+        <span class="fi-label">التحويلات</span>
+      </button>
+      <button class="featured-item" data-page="all_tools">
+        <span class="fi-icon" style="background:linear-gradient(135deg,#6366f1,#4338ca)"><i class="fas fa-th"></i></span>
+        <span class="fi-label">كل الأدوات</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Categories Grid -->
+  <section class="dash-section">
+    <h2 class="section-title">التصنيفات</h2>
+    <div class="categories-grid" id="categoriesGrid"></div>
+  </section>
+
+  <!-- Recently Used -->
+  <section class="dash-section">
+    <h2 class="section-title">آخر الأدوات المستخدمة</h2>
+    <div class="recently-used" id="recentlyUsed"></div>
+  </section>
+
+  <!-- All Tools Quick List -->
+  <section class="dash-section">
+    <div class="section-title-row">
+      <h2 class="section-title" style="margin-bottom:0">جميع الأدوات</h2>
+      <button class="view-all-link" onclick="window.navigateTo('all_tools')">عرض الكل <i class="fas fa-arrow-left"></i></button>
+    </div>
+    <div class="tools-compact" id="allToolsList"></div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="dash-footer">
+    <div class="footer-version">
+      <span class="version-badge">v3.0</span>
+      <span>المهندس v3.0 - جميع الحقوق محفوظة</span>
+    </div>
+    <p class="footer-meta">Al-Mohandes &mdash; Arabic Engineering Calculator</p>
+  </footer>
+</div>
+
+<style>
+/* ─── Dashboard Specific Styles ─── */
+.main-dashboard {
+  padding-bottom: var(--sp-4);
+}
+
+/* Welcome Card */
+.welcome-card {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-5);
+  padding: var(--sp-6) var(--sp-5);
+  margin-bottom: var(--sp-5);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--blur-amount));
+  -webkit-backdrop-filter: blur(var(--blur-amount));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--glass-shadow);
+  position: relative;
+  overflow: hidden;
+}
+.welcome-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at 80% 20%, rgba(var(--color-primary-rgb), 0.06), transparent 60%);
+  pointer-events: none;
+}
+.welcome-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--color-primary), #1557b0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(var(--color-primary-rgb), 0.25);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+.welcome-text {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+.welcome-text h1 {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: var(--sp-1);
+}
+.welcome-text p {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Search */
+.search-wrapper {
+  position: relative;
+  margin-bottom: var(--sp-5);
+  z-index: 10;
+}
+.search-bar {
+  position: relative;
+}
+.search-bar input {
+  width: 100%;
+  padding: var(--sp-3) var(--sp-10);
+  padding-left: var(--sp-8);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--blur-amount));
+  -webkit-backdrop-filter: blur(var(--blur-amount));
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+  direction: rtl;
+  outline: none;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+.search-bar input::placeholder {
+  color: var(--text-tertiary);
+}
+.search-bar input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+.search-bar .search-icon {
+  position: absolute;
+  right: var(--sp-4);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-tertiary);
+  pointer-events: none;
+  font-size: 1rem;
+}
+.search-bar .search-clear {
+  position: absolute;
+  left: var(--sp-2);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-tertiary);
+  cursor: pointer;
+  padding: var(--sp-1);
+  border-radius: var(--radius-full);
+  transition: all var(--duration-fast) var(--ease-out);
+  display: none;
+  z-index: 2;
+  font-size: 0.9rem;
+}
+.search-bar .search-clear:hover {
+  color: var(--text-primary);
+  background: var(--bg-tertiary);
+}
+.search-bar input:not(:placeholder-shown) ~ .search-clear {
+  display: flex;
+}
+
+/* Search Results Dropdown */
+.search-results {
+  position: absolute;
+  top: calc(100% - var(--sp-2));
+  left: 0;
+  right: 0;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  max-height: 320px;
+  overflow-y: auto;
+  display: none;
+  z-index: 20;
+  padding: var(--sp-2);
+}
+.search-results.active {
+  display: block;
+  animation: fadeInUp 0.2s var(--ease-out) both;
+}
+.search-result-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-3);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out);
+}
+.search-result-item:hover {
+  background: var(--bg-tertiary);
+}
+.search-result-item:active {
+  transform: scale(0.98);
+}
+.search-result-item .sri-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+.search-result-item .sri-info h4 {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.search-result-item .sri-info p {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+}
+.search-empty {
+  text-align: center;
+  padding: var(--sp-6) var(--sp-4);
+  color: var(--text-tertiary);
+  font-size: var(--font-size-sm);
+}
+
+/* Featured Scroll */
+.featured-scroll {
+  display: flex;
+  gap: var(--sp-3);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: var(--sp-1) 0 var(--sp-2);
+  margin-bottom: var(--sp-1);
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+}
+.featured-scroll::-webkit-scrollbar {
+  display: none;
+}
+.featured-item {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-4) var(--sp-4);
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+  user-select: none;
+  min-width: 80px;
+  scroll-snap-align: start;
+}
+.featured-item:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--border-strong);
+}
+.featured-item:active {
+  transform: scale(0.92);
+}
+.featured-item .fi-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.featured-item .fi-label {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+/* Categories Grid */
+.categories-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-1);
+}
+.cat-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: var(--sp-5) var(--sp-4);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+  user-select: none;
+  overflow: hidden;
+  min-height: 100px;
+}
+.cat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.3), transparent);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.cat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+.cat-card:active {
+  transform: scale(0.97);
+}
+.cat-card .cat-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-md);
+  background: rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: #fff;
+  margin-bottom: var(--sp-3);
+  backdrop-filter: blur(4px);
+}
+.cat-card .cat-name {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 2px;
+}
+.cat-card .cat-count {
+  font-size: var(--font-size-xs);
+  color: rgba(255,255,255,0.75);
+  font-weight: 500;
+}
+.cat-card .cat-arrow {
+  position: absolute;
+  bottom: var(--sp-3);
+  left: var(--sp-4);
+  color: rgba(255,255,255,0.5);
+  font-size: 0.9rem;
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+.cat-card:hover .cat-arrow {
+  transform: translateX(-4px);
+}
+
+/* Recently Used */
+.recently-used {
+  margin-bottom: var(--sp-1);
+}
+.recently-scroll {
+  display: flex;
+  gap: var(--sp-3);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: var(--sp-1) 0 var(--sp-2);
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+}
+.recently-scroll::-webkit-scrollbar {
+  display: none;
+}
+.recent-item {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-4) var(--sp-4);
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+  user-select: none;
+  min-width: 90px;
+  scroll-snap-align: start;
+}
+.recent-item:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--border-strong);
+}
+.recent-item:active {
+  transform: scale(0.92);
+}
+.recent-item .ri-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: #fff;
+}
+.recent-item .ri-label {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Section Title Row */
+.section-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--sp-3);
+}
+.view-all-link {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-primary);
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: var(--sp-1) var(--sp-2);
+  border-radius: var(--radius-sm);
+  transition: all var(--duration-fast) var(--ease-out);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+}
+.view-all-link:hover {
+  background: var(--color-primary-light);
+}
+.view-all-link i {
+  font-size: 0.8rem;
+}
+
+/* Tools Compact List */
+.tools-compact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.tools-compact-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--radius-md);
+  background: var(--glass-bg);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid var(--glass-border);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+.tools-compact-item:hover {
+  background: var(--bg-card);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-md);
+  transform: translateX(-3px);
+}
+.tools-compact-item:active {
+  transform: scale(0.985);
+}
+.tools-compact-item .tci-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+.tools-compact-item .tci-name {
+  flex: 1;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.tools-compact-item .tci-arrow {
+  color: var(--text-tertiary);
+  font-size: 0.8rem;
+}
+
+/* Footer */
+.dash-footer {
+  text-align: center;
+  padding: var(--sp-8) var(--sp-4) var(--sp-4);
+  border-top: 1px solid var(--border);
+  margin-top: var(--sp-8);
+}
+.dash-footer .footer-version {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--sp-2);
+}
+.version-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px var(--sp-2);
+  border-radius: var(--radius-full);
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+}
+.dash-footer .footer-meta {
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+}
+
+/* Stagger overrides for dashboard items */
+.main-dashboard.stagger > * {
+  animation: fadeInUp var(--duration-slow) var(--ease-out) both;
+}
+.main-dashboard.stagger > *:nth-child(1) { animation-delay: 0ms; }
+.main-dashboard.stagger > *:nth-child(2) { animation-delay: 80ms; }
+.main-dashboard.stagger > *:nth-child(3) { animation-delay: 160ms; }
+.main-dashboard.stagger > *:nth-child(4) { animation-delay: 240ms; }
+.main-dashboard.stagger > *:nth-child(5) { animation-delay: 320ms; }
+.main-dashboard.stagger > *:nth-child(6) { animation-delay: 400ms; }
+.main-dashboard.stagger > *:nth-child(7) { animation-delay: 480ms; }
+
+/* Empty state for recent */
+.recently-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-8) var(--sp-4);
+  text-align: center;
+  background: var(--glass-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: var(--radius-lg);
+  border: 1px dashed var(--border-strong);
+}
+.recently-empty .re-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background: var(--bg-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  color: var(--text-tertiary);
+  margin-bottom: var(--sp-3);
+}
+.recently-empty p {
+  font-size: var(--font-size-sm);
+  color: var(--text-tertiary);
+}
+
+/* Responsive */
+@media (min-width: 414px) {
+  .categories-grid {
+    gap: var(--sp-4);
+  }
+}
+@media (min-width: 768px) {
+  .categories-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .featured-item {
+    min-width: 100px;
+    padding: var(--sp-5) var(--sp-4);
+  }
+  .welcome-avatar {
+    width: 72px;
+    height: 72px;
+    font-size: 1.8rem;
+  }
+  .welcome-text h1 {
+    font-size: var(--font-size-3xl);
+  }
+}
+@media (min-width: 1024px) {
+  .categories-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+</style>
+
+<script>
+(function() {
+  'use strict';
+
+  const TOOLS = window.TOOLS || [];
+  const CATEGORIES = window.getAllCategories ? window.getAllCategories() : [];
+
+  const CATEGORY_GRADIENTS = {
+    geometry: 'linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%)',
+    volumes: 'linear-gradient(135deg, #0acf83 0%, #059669 100%)',
+    construction: 'linear-gradient(135deg, #ff6b35 0%, #dc2626 100%)',
+    conversion: 'linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)',
+    electrical: 'linear-gradient(135deg, #ffc043 0%, #d97706 100%)',
+    mechanical: 'linear-gradient(135deg, #ff3b30 0%, #b91c1c 100%)',
+    math: 'linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%)',
+    structural: 'linear-gradient(135deg, #6366f1 0%, #4338ca 100%)',
+    hvac: 'linear-gradient(135deg, #0dcaf0 0%, #0891b2 100%)'
+  };
+
+  const CATEGORY_ORDER = ['geometry', 'volumes', 'construction', 'conversion', 'electrical', 'mechanical', 'math', 'structural', 'hvac'];
+
+  // ─── Time-based Greeting ───
+  function setGreeting() {
+    const h = new Date().getHours();
+    let msg = 'مرحباً';
+    if (h >= 5 && h < 12) msg = 'صباح الخير';
+    else if (h >= 12 && h < 17) msg = 'مساء الخير';
+    else if (h >= 17 || h < 5) msg = 'مساء الخير';
+    document.getElementById('greetingText').textContent = msg;
+  }
+  setGreeting();
+
+  // ─── Render Categories ───
+  function renderCategories() {
+    const grid = document.getElementById('categoriesGrid');
+    if (!grid) return;
+    let html = '';
+    CATEGORY_ORDER.forEach(catId => {
+      const cat = CATEGORIES.find(c => c.id === catId);
+      if (!cat) return;
+      const toolsInCat = TOOLS.filter(t => t.cat === catId);
+      const count = toolsInCat.length;
+      const gradient = CATEGORY_GRADIENTS[catId] || 'linear-gradient(135deg, #6366f1, #4338ca)';
+      html += `
+        <div class="cat-card" style="background:${gradient}" onclick="window.navigateTo('tools_by_category', {category:'${catId}'})">
+          <div class="cat-icon"><i class="${cat.icon}"></i></div>
+          <div class="cat-name">${cat.name}</div>
+          <div class="cat-count">${count} أدوات</div>
+          <div class="cat-arrow"><i class="fas fa-chevron-left"></i></div>
+        </div>
+      `;
+    });
+    grid.innerHTML = html;
+  }
+  renderCategories();
+
+  // ─── Render All Tools (first 12) ───
+  function renderAllTools() {
+    const list = document.getElementById('allToolsList');
+    if (!list) return;
+    const max = 12;
+    const slice = TOOLS.slice(0, max);
+    let html = '';
+    slice.forEach(tool => {
+      const cat = CATEGORIES.find(c => c.id === tool.cat);
+      const color = cat ? cat.color : '#6366f1';
+      html += `
+        <div class="tools-compact-item" data-tool-id="${tool.id}" onclick="window.navigateTo('${tool.id}')">
+          <span class="tci-icon" style="background:${color}"><i class="${tool.icon}"></i></span>
+          <span class="tci-name">${tool.name}</span>
+          <span class="tci-arrow"><i class="fas fa-chevron-left"></i></span>
+        </div>
+      `;
+    });
+    list.innerHTML = html;
+  }
+  renderAllTools();
+
+  // ─── Recently Used ───
+  function renderRecentlyUsed() {
+    const container = document.getElementById('recentlyUsed');
+    if (!container) return;
+    let recent;
+    try {
+      recent = JSON.parse(localStorage.getItem('area-pro-history-list') || '[]');
+    } catch(e) {
+      recent = [];
+    }
+    if (!recent || recent.length === 0) {
+      container.innerHTML = `
+        <div class="recently-empty">
+          <div class="re-icon"><i class="fas fa-clock"></i></div>
+          <p>لم تستخدم أي أداة بعد</p>
+        </div>
+      `;
+      return;
+    }
+    recent = recent.slice(0, 8);
+    let html = '<div class="recently-scroll">';
+    recent.forEach(entry => {
+      const tool = TOOLS.find(t => t.id === entry.toolId);
+      if (!tool) return;
+      const cat = CATEGORIES.find(c => c.id === tool.cat);
+      const color = cat ? cat.color : '#6366f1';
+      html += `
+        <div class="recent-item" onclick="window.navigateTo('${tool.id}')">
+          <span class="ri-icon" style="background:${color}"><i class="${tool.icon}"></i></span>
+          <span class="ri-label">${tool.name}</span>
+        </div>
+      `;
+    });
+    html += '</div>';
+    container.innerHTML = html;
+  }
+  renderRecentlyUsed();
+
+  // ─── Search ───
+  let searchTimeout = null;
+
+  function getToolColor(tool) {
+    const cat = CATEGORIES.find(c => c.id === tool.cat);
+    return cat ? cat.color : '#6366f1';
+  }
+
+  function performSearch(query) {
+    const resultsContainer = document.getElementById('searchResults');
+    if (!query || query.trim() === '') {
+      resultsContainer.classList.remove('active');
+      resultsContainer.innerHTML = '';
+      return;
+    }
+    const results = window.searchTools ? window.searchTools(query) : [];
+    if (results.length === 0) {
+      resultsContainer.innerHTML = '<div class="search-empty"><i class="fas fa-search" style="font-size:1.5rem;display:block;margin-bottom:var(--sp-2);opacity:0.4"></i>لا توجد نتائج</div>';
+      resultsContainer.classList.add('active');
+      return;
+    }
+    let html = '';
+    results.slice(0, 10).forEach(tool => {
+      const color = getToolColor(tool);
+      html += `
+        <div class="search-result-item" onclick="window.navigateTo('${tool.id}')">
+          <span class="sri-icon" style="background:${color}"><i class="${tool.icon}"></i></span>
+          <div class="sri-info">
+            <h4>${highlightMatch(tool.name, query)}</h4>
+            <p>${highlightMatch(tool.desc, query)}</p>
+          </div>
+        </div>
+      `;
+    });
+    resultsContainer.innerHTML = html;
+    resultsContainer.classList.add('active');
+  }
+
+  function highlightMatch(text, query) {
+    const q = query.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp('(' + q + ')', 'gi');
+    return text.replace(regex, '<mark style="background:var(--color-primary-light);color:var(--color-primary);border-radius:2px;padding:0 2px">$1</mark>');
+  }
+
+  const searchInput = document.getElementById('searchInput');
+  const searchClear = document.getElementById('searchClear');
+
+  if (searchInput) {
+    searchInput.addEventListener('input', function() {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(function() {
+        performSearch(this.value);
+      }.bind(this), 200);
+    });
+
+    searchInput.addEventListener('focus', function() {
+      if (this.value.trim()) {
+        performSearch(this.value);
+      }
+    });
+
+    document.addEventListener('click', function(e) {
+      const wrapper = document.getElementById('searchWrapper');
+      if (wrapper && !wrapper.contains(e.target)) {
+        document.getElementById('searchResults').classList.remove('active');
+      }
+    });
+  }
+
+  if (searchClear) {
+    searchClear.addEventListener('click', function() {
+      if (searchInput) {
+        searchInput.value = '';
+        searchInput.focus();
+        document.getElementById('searchResults').classList.remove('active');
+        document.getElementById('searchResults').innerHTML = '';
+      }
+    });
+  }
+
+  // ─── Track tool usage on click (delegated) ───
+  document.addEventListener('click', function(e) {
+    const toolItem = e.target.closest('[data-tool-id]');
+    if (toolItem) {
+      const toolId = toolItem.getAttribute('data-tool-id');
+      if (toolId && window.addToHistory) {
+        window.addToHistory(toolId, '');
+      }
+    }
+  });
+
+  // ─── Smooth scroll for horizontal sections ───
+  document.querySelectorAll('.featured-scroll, .recently-scroll').forEach(function(el) {
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    el.addEventListener('mousedown', function(e) {
+      isDown = true;
+      el.style.cursor = 'grabbing';
+      startX = e.pageX - el.offsetLeft;
+      scrollLeft = el.scrollLeft;
+    });
+
+    el.addEventListener('mouseleave', function() {
+      isDown = false;
+      el.style.cursor = 'grab';
+    });
+
+    el.addEventListener('mouseup', function() {
+      isDown = false;
+      el.style.cursor = 'grab';
+    });
+
+    el.addEventListener('mousemove', function(e) {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - el.offsetLeft;
+      const walk = (x - startX) * 1.5;
+      el.scrollLeft = scrollLeft - walk;
+    });
+  });
+
+  // ─── Listen for history changes to update recently used ───
+  document.addEventListener('historychange', function() {
+    renderRecentlyUsed();
+  });
+})();
+</script>

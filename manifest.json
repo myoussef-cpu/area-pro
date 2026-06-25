@@ -1,0 +1,17 @@
+{
+  "name": "المهندس - حاسبة الهندسة الشاملة",
+  "short_name": "المهندس",
+  "description": "تطبيق حاسبة هندسية شامل - مساحات، أحجام، إنشاءات، كهرباء، ميكانيكا",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#f8f9fa",
+  "theme_color": "#1a73e8",
+  "orientation": "portrait",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    { "src": "/icon.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "categories": ["engineering", "utilities", "productivity"]
+}

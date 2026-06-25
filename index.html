@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="المهندس - حاسبة المساحة الهندسية المتكاملة. أدوات هندسية احترافية لحساب المساحات والأحجام وكميات الخرسانة والحديد.">
+  <meta name="theme-color" content="#1a73e8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="المهندس">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="المهندس">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="robots" content="index, follow">
+
+  <title>المهندس - حاسبة المساحة الهندسية</title>
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
+  <link rel="mask-icon" href="icon-192.png" color="#1a73e8">
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script>
+    if (localStorage.getItem('darkMode') === 'true') {
+      document.documentElement.classList.add('dark-mode');
+    }
+  </script>
+</head>
+<body>
+  <div id="loading-overlay" class="loading-overlay" aria-hidden="true">
+    <div class="spinner"></div>
+    <div class="loading-text">جاري التحميل...</div>
+  </div>
+
+  <header class="app-bar" id="app-bar">
+    <div class="app-bar-actions">
+      <button class="btn-icon" id="theme-toggle" type="button" aria-label="الوضع الليلي" title="الوضع الليلي">
+        <i class="fas fa-moon"></i>
+      </button>
+    </div>
+    <div class="app-bar-title">
+      <span class="brand-icon" aria-hidden="true">هـ</span>
+      المهندس
+    </div>
+    <div class="app-bar-actions">
+      <button class="btn-icon" id="settings-btn" type="button" aria-label="الإعدادات" title="الإعدادات">
+        <i class="fas fa-cog"></i>
+      </button>
+    </div>
+  </header>
+
+  <main id="main-content" role="main"></main>
+
+  <nav class="bottom-nav" id="bottom-nav" role="tablist" aria-label="التنقل الرئيسي">
+    <button class="bottom-nav-item active" type="button" role="tab" aria-selected="true" data-tab="home" aria-label="الرئيسية">
+      <span class="nav-icon"><i class="fas fa-th-large"></i></span>
+      <span class="nav-label">الرئيسية</span>
+    </button>
+    <button class="bottom-nav-item" type="button" role="tab" aria-selected="false" data-tab="calculator" aria-label="الآلة الحاسبة">
+      <span class="nav-icon"><i class="fas fa-calculator"></i></span>
+      <span class="nav-label">الآلة الحاسبة</span>
+    </button>
+    <button class="bottom-nav-item" type="button" role="tab" aria-selected="false" data-tab="saved" aria-label="المحفوظات">
+      <span class="nav-icon"><i class="fas fa-history"></i></span>
+      <span class="nav-label">المحفوظات</span>
+    </button>
+  </nav>
+
+  <script type="module" src="js/app.js"></script>
+  <!-- <script type="module" src="js/firebase-config.js"></script> -->
+  <!-- <script type="module" src="js/firebase-logic.js"></script> -->
+  <script src="js/export-image.js"></script>
+  <script src="js/mini-calculator.js"></script>
+  <script src="js/reset-button.js"></script>
+  <script src="js/zoom-handler.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('sw.js').catch(function() {});
+      });
+    }
+  </script>
+  <script>
+    (function() {
+      var isDark = localStorage.getItem('darkMode') === 'true';
+      if (isDark) {
+        document.body.classList.add('dark-mode');
+      }
+      document.documentElement.classList.remove('dark-mode');
+      var toggle = document.getElementById('theme-toggle');
+      if (toggle) {
+        var icon = toggle.querySelector('i');
+        if (icon) {
+          icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+        }
+      }
+    })();
+  </script>
+</body>
+</html>
